@@ -2,53 +2,18 @@ require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
 
-configure do
-  enable :sessions
-end
-
-helpers do
-  def username
-    session[:identity] ? session[:identity] : 'Hello stranger'
-  end
-end
-
-before '/secure/*' do
-  unless session[:identity]
-    session[:previous_url] = request.path
-    @error = 'Sorry, you need to be logged in to visit ' + request.path
-    halt erb(:login_form)
-  end
-end
-
 get '/' do
   erb 'Hello motherfucker! Это работает!'
-end
-
-get '/login/form' do
-  erb :login_form
 end
 
 get '/about' do
   erb :about
 end
 
-post '/login/attempt' do
-  pass = params['pass']
-  if pass == 'secret'
-    session[:identity] = params['username']
-    where_user_came_from = session[:previous_url] || '/'
-    redirect to where_user_came_from
-  else
-    @message = "Wrong password"
-    erb :login_form
-  end
+get '/visit' do
+  erb :visit
 end
 
-get '/logout' do
-  session.delete(:identity)
-  erb "<div class='alert alert-message'>Logged out</div>"
-end
-
-get '/secure/place' do
-  erb 'This is a secret place that only <%=session[:identity]%> has access to!'
+get '/contacts' do
+  erb :contacts
 end

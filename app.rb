@@ -21,11 +21,15 @@ before '/secure/*' do
 end
 
 get '/' do
-  erb 'Hello motherfucker!'
+  erb 'Hello motherfucker! Это работает!'
 end
 
 get '/login/form' do
   erb :login_form
+end
+
+get '/about' do
+  erb :about
 end
 
 post '/login/attempt' do
